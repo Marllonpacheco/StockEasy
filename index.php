@@ -2,8 +2,8 @@
 include "conexao.php"; // traz a variável $conn
 
 // Faz o SELECT e já transforma em array
-$sql    = "SELECT * FROM stockeasy ORDER BY id DESC";
-$alunos = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+$sql    = "SELECT * FROM produtos ORDER BY id DESC";
+$produtos = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -29,15 +29,18 @@ $alunos = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
         <th>Ações</th>
     </tr>
 
-    <?php foreach ($alunos as $aluno): ?>
+    <?php foreach ($produtos as $produto): ?>
     <tr>
-        <td><?= $aluno['id'] ?></td>
-        <td><?= htmlspecialchars($aluno['nome'])  ?></td>
-        <td><?= htmlspecialchars($aluno['email']) ?></td>
+        <td><?= $produto['id'] ?></td>
+        <td><?= htmlspecialchars($produto['nome'])  ?></td>
+        <td><?= htmlspecialchars($produto['codigo']) ?></td>
+        <td><?= $produto['quantidade'] ?></td>
+        <td><?= $produto['estoque_minimo'] ?></td>
+        <td><?= htmlspecialchars($produto['categoria']) ?></td>
         <td>
-            <a href="editar.php?id=<?= $aluno['id'] ?>">Editar</a>
+            <a href="editar.php?id=<?= $produto['id'] ?>">Editar</a>
             |
-            <a href="excluir.php?id=<?= $aluno['id'] ?>"
+            <a href="excluir.php?id=<?= $produto['id'] ?>"
                onclick="return confirm('Deseja excluir?')">Excluir</a>
         </td>
     </tr>
