@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CRUD Alunos</title>
+  <title>Criar conta | StockEasy</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -67,11 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <form method="POST">
         <label class="form-label">Nome</label>
         <input type="text" name="nome" class="form-control mb-3"
-               value="<?= htmlspecialchars($nome) ?>" required>
+               maxlength="100" value="<?= htmlspecialchars($nome, ENT_QUOTES, 'UTF-8') ?>" required>
 
         <label class="form-label">E-mail</label>
         <input type="email" name="email" class="form-control mb-3"
-               value="<?= htmlspecialchars($email) ?>" required>
+               maxlength="150" value="<?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?>" required>
 
         <label class="form-label">Senha</label>
         <input type="password" name="senha" class="form-control mb-3"

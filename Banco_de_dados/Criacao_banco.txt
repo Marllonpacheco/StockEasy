@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS produtos (
     quantidade INT NOT NULL DEFAULT 0,
     estoque_minimo INT NOT NULL DEFAULT 0,
     categoria_id INT NOT NULL,
+    imagem VARCHAR(255) NULL,
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_produto_categoria
@@ -45,10 +46,10 @@ CREATE TABLE IF NOT EXISTS produtos (
         ON DELETE RESTRICT,
 
     CONSTRAINT chk_produto_quantidade
-        CHECK (quantidade = 0),
+        CHECK (quantidade >= 0),
 
     CONSTRAINT chk_produto_minimo
-        CHECK (estoque_minimo = 0)
+        CHECK (estoque_minimo >= 0)
 ) ENGINE=InnoDB;
 
 -- 4. MOVIMENTACOES
@@ -90,7 +91,7 @@ CREATE TABLE IF NOT EXISTS itens_movimentacao (
         ON DELETE RESTRICT,
 
     CONSTRAINT chk_item_quantidade
-        CHECK (quantidade  0),
+        CHECK (quantidade > 0),
 
     CONSTRAINT uq_movimentacao_produto
         UNIQUE (movimentacao_id, produto_id)

@@ -6,15 +6,16 @@ require 'conexao.php';
 $erro = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
+    $email = trim($_POST['email'] ?? '');
+    $senha = $_POST['senha'] ?? '';
 
-    $stmt = $conn-> prepare("SELECT * FROM usuarios WHERE email = ?");
+    $stmt = $conn->prepare('SELECT id, nome, senha FROM usuarios WHERE email = ?');
     $stmt->execute([$email]);
     $usuario = $stmt->fetch();
 
     if ($usuario && password_verify($senha, $usuario['senha'])) {
-        // senha confere! grava dados na sessão
+        // Troca o ID da sessão após o login para evitar reutilização do ID anterior.
+        session_regenerate_id(true);
         $_SESSION['usuario_id']   = $usuario['id'];
         $_SESSION['usuario_nome'] = $usuario['nome'];
 
@@ -31,11 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CRUD Alunos</title>
+  <title>Entrar | StockEasy</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 
+<body>
 <div class="container" style="max-width:380px;margin-top:60px">
   <div class="card shadow-sm">
     <div class="card-header bg-purple text-white text-center"
@@ -44,10 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <div class="card-body">
 
-      <?php if (isset($erro)): ?>
+      <?php if ($erro): ?>
         <div class="alert alert-danger">
-          <?= $erro ?>
+          <?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8') ?>
         </div>
+      <?php endif; ?>
+      <?php if (($_GET['cadastro'] ?? '') === 'ok'): ?>
+        <div class="alert alert-success">Conta criada. Entre com seu e-mail e senha.</div>
       <?php endif; ?>
 
       <form method="POST">
@@ -65,6 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </button>
       </form>
 
+      <p class="text-center mt-3 mb-0">Ainda não tem conta? <a href="cadastro.php">Cadastrar</a></p>
+
     </div>
   </div>
 </div>
+</body>
+</html>

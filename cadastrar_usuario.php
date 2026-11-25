@@ -1,17 +1,9 @@
 <?php
-require 'conexao.php';
-
+// O cadastro com validação e password_hash fica centralizado em cadastro.php.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome  = $_POST['nome'];
-    $email = $_POST['email'];
-    $hash  = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-
-    $stmt = $pdo->prepare(
-        "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)"
-    );
-    $stmt->execute([$nome, $email, $hash]);
-
-    header("Location: login.php");
-    exit;
+    http_response_code(405);
+    exit('Use o formulário de cadastro.');
 }
-?>
+
+header('Location: cadastro.php');
+exit;
